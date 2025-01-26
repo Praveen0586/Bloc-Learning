@@ -35,11 +35,12 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: BlocProvider.value( 
-       value: context.read<BlockName>(),
+      home: BlocProvider<CounterBloc>( 
+        lazy: true,
+        create: (context) => CounterBloc(),
         child: MyHomePage(title: "BlockApp"),
       ),
-    );//htis method was used for Insertig custom block 
+    );
   }
 }
 
