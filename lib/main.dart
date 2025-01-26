@@ -135,13 +135,28 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                 },
               ),
-              BlocListener<CounterBloc, CounterState>(child: Text("Bloc Listener"),
+              BlocListener<CounterBloc, CounterState>(
+                  child: Text("Bloc Listener"),
                   listener: (context, state) {
-                if (state.count == 4) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("You have  reached 4")));
-                }
-              })
+                    if (state.count == 4) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("You have  reached 4")));
+                    }
+                  }),
+                  //Bloc COnsumer is the combination of Bloc Builder and bloc Listerner
+              BlocConsumer<Visibiltybloc, Visibilitystate>(
+                  builder: (context, state) {
+                    return Container(
+                      height: 40,
+                      width: 100,
+                      color: Colors.amber,
+                    );
+                  },
+                  listener: (context, state) {
+                    if (state.visible==false){
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Visibility Off")));
+                    }
+                  })
             ],
           ),
         ),
