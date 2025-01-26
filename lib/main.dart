@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: BlocProvider(
+      home: BlocProvider<CounterBloc>( 
         lazy: true,
         create: (context) => CounterBloc(),
         child: MyHomePage(title: "BlockApp"),
