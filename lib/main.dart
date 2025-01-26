@@ -134,7 +134,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   );
                 },
-              )
+              ),
+              BlocListener<CounterBloc, CounterState>(child: Text("Bloc Listener"),
+                  listener: (context, state) {
+                if (state.count == 4) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("You have  reached 4")));
+                }
+              })
             ],
           ),
         ),
