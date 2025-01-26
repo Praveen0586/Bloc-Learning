@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_2/bloc/counter_bloc.dart';
 import 'package:flutter_application_2/bloc/event.dart';
 import 'package:flutter_application_2/bloc/increment_state.dart';
+import 'package:flutter_application_2/visibilityBloc/visibilityEvent.dart';
+import 'package:flutter_application_2/visibilityBloc/visibilityState.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_application_2/visibilityBloc/visibiltyBloc.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,9 +38,11 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: BlocProvider<CounterBloc>( 
-        lazy: true,
-        create: (context) => CounterBloc(),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => CounterBloc()),
+          BlocProvider(create: (context) => Visibiltybloc())
+        ],
         child: MyHomePage(title: "BlockApp"),
       ),
     );
@@ -118,6 +123,18 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: Theme.of(context).textTheme.headlineMedium,
                 );
               }),
+              BlocBuilder<Visibiltybloc, Visibilitystate>(
+                builder: (context, state) {
+                  return Visibility(
+                    visible: state.visible,
+                    child: Container(
+                      height: 100,
+                      width: 100,
+                      color: Colors.green,
+                    ),
+                  );
+                },
+              )
             ],
           ),
         ),
@@ -140,6 +157,24 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               tooltip: 'Decrement',
               child: const Icon(Icons.minimize),
+            ),
+            FloatingActionButton(
+              onPressed: () {
+                // countersb.add(CounterIncrementEvent());
+
+                context.read<Visibiltybloc>().add(VisiBilityShowEevent());
+              },
+              tooltip: 'show',
+              child: Text("Show"),
+            ),
+            FloatingActionButton(
+              onPressed: () {
+                // countersb.add(CounterIncrementEvent());
+
+                context.read<Visibiltybloc>().add(VisibilityHideEvent());
+              },
+              tooltip: 'hide',
+              child: Text("Hide"),
             ),
           ],
         ) // This trailing comma makes auto-formatting nicer for build methods.
