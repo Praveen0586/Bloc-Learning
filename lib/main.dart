@@ -35,7 +35,11 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: BlocProvider(
+        lazy: true,
+        create: (context) => CounterBloc(),
+        child: MyHomePage(title: "BlockApp"),
+      ),
     );
   }
 }
@@ -105,17 +109,15 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               BlocBuilder<CounterBloc, CounterState>(
                   buildWhen: (previous, current) {
-                    print(previous.count);
-                    print(current.count);
-                    return true;
-                  },
-                  bloc: countersb,
-                  builder: (context, state) {
-                    return Text(
-                      state.count.toString(),
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    );
-                  }),
+                print(previous.count);
+                print(current.count);
+                return true;
+              }, builder: (context, state) {
+                return Text(
+                  state.count.toString(),
+                  style: Theme.of(context).textTheme.headlineMedium,
+                );
+              }),
             ],
           ),
         ),
@@ -124,14 +126,17 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             FloatingActionButton(
               onPressed: () {
-                countersb.add(CounterIncrementEvent());
+                // countersb.add(CounterIncrementEvent());
+
+                context.read<CounterBloc>().add(CounterIncrementEvent());
               },
               tooltip: 'Increment',
               child: const Icon(Icons.add),
             ),
             FloatingActionButton(
               onPressed: () {
-                countersb.add(CounterDecrementEvent());
+                // countersb.add(CounterDecrementEvent());
+                context.read<CounterBloc>().add(CounterDecrementEvent());
               },
               tooltip: 'Decrement',
               child: const Icon(Icons.minimize),
